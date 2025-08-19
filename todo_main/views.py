@@ -5,8 +5,13 @@ from todo.models import Task
 
 def home(request):
     tasks = Task.objects.filter(is_completed=True)
-    print(tasks)
-    return render(request, 'home.html')
+    context = {
+        'tasks': tasks,
+    }
+    return render(request, 'home.html', context)
+
 
 def addTask(request):
-    return HttpResponse("Task added!")
+    task = request.POST['task']
+    Task.objects.create(task=task)
+    return redirect('home')
